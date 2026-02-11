@@ -90,6 +90,24 @@ require 'config/db.php';
       </div>
 
     </div><!-- End About Me -->
+    <div id="msg"></div>
+    <hr>
+    <!-- listes des inventaires -->
+    <h5 class="mt-4">Liste des inventaires</h5>
+    <div id="listeItems">
+        <?php
+        foreach($pdo->query("SELECT * FROM items ORDER BY id DESC") as $item){
+            echo '
+            <div class="d-flex justify-content-between align-items-center border p-2 mb-2">
+                <span>'.$item['nom'].'</span>
+                <button class="btn btn-danger btn-sm deleteItem" data-id="'.$item['id'].'">
+                    Supprimer
+                </button>
+            </div>
+            ';
+        }
+        ?>
+    </div>
 
     <!-- ======= Citations ======= -->
     <div class="testimonials container">
@@ -244,7 +262,9 @@ require 'config/db.php';
       $.post('ajax/add_item.php', $(this).serialize(), function(res){
         $('#msg').html(res);
         $('#formItem')[0].reset();
+        loadItems();
       });
+
     });
   </script>
   <!-- pour les ventes  -->
@@ -286,6 +306,34 @@ require 'config/db.php';
     loadBilan();
     setInterval(loadBilan, 5000); // rafraîchissement auto toutes les 5s
   </script>
+
+  <!-- pour la boite de dialogue de supprimer  -->
+  <script>
+    $(document).on('click', '.deleteItem', function(){
+
+        let id = $(this).data('id');
+
+        if(confirm("Voulez-vous vraiment supprimer cet inventaire ?")){
+            
+            $.post('ajax/delete_item.php', {id: id}, function(response){
+
+                if(response.trim() === 'success'){
+                    loadItems();
+                } else {
+                    alert("Erreur lors de la suppression");
+                }
+
+            });
+
+        }
+
+    });
+
+    function loadItems(){
+        $('#listeItems').load('ajax/get_items.php');
+    }
+  </script>
+
   <!-- Vendor JS Files -->
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

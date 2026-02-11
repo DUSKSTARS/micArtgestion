@@ -1,5 +1,5 @@
-CREATE DATABASE inventaire_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE inventaire_app;
+CREATE DATABASE if0_41031713_inventaire_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE if0_41031713_inventaire_app;
 
 -- Inventaires (produits/services)
 CREATE TABLE items (
