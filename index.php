@@ -196,7 +196,7 @@ require 'config/db.php';
           <div class="resume-item pb-0">
             <h4>Nouvelle vente</h4>
             <form id="formVente">
-              <select name="item_id" class="form-control mb-2" required>
+              <select name="item_id" id="item_id" class="form-control mb-2" required>
                 <option value="">Choisir</option>
                 <?php
                   require 'config/db.php';
@@ -262,7 +262,8 @@ require 'config/db.php';
       $.post('ajax/add_item.php', $(this).serialize(), function(res){
         $('#msg').html(res);
         $('#formItem')[0].reset();
-        loadItems();
+        loadItems();        // recharge la liste affichée
+        loadItemsSelect();  // recharge le select vente
       });
 
     });
@@ -277,6 +278,12 @@ require 'config/db.php';
         $('#formVente')[0].reset();
       });
     });
+
+    // fonction pour rafraichir les inventaires dans la vente 
+    function loadItemsSelect(){
+      $('#item_id').load('ajax/get_items_options.php');
+    }
+
   </script>
   <!-- depenses  -->
   <script>
